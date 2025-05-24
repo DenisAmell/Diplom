@@ -53,8 +53,6 @@ public sealed class VerticesDegreesVectorGreedyRestorer
             from.AddSimplex(simplexToAdd);
         }
     }
-
-
     private async IAsyncEnumerable<HomogenousHypergraph?> RestoreAllInnerRecursiveAsync(
         Domain.VerticesDegreesVector from,
         int simplicesDimension,
@@ -142,59 +140,58 @@ public sealed class VerticesDegreesVectorGreedyRestorer
             addedSimplicesSequence.Select(x => x.Item2).ToArray());
     }
 
-    // /// <summary>
-    // /// 
-    // /// </summary>
-    // /// <param name="from"></param>
-    // /// <param name="simplicesDimension"></param>
-    // /// <param name="cancellationToken"></param>
-    // /// <returns></returns>
-    // [Obsolete]
-    // private async IAsyncEnumerable<HomogenousHypergraph?> RestoreAllInnerIterativeAsync(
-    //     VerticesDegreesVector from,
-    //     int simplicesDimension,
-    //     CancellationToken cancellationToken = default)
-    // {
-    //     var simplicesMaxCount = BigIntegerExtensions.CombinationsCount(from.VerticesCount, simplicesDimension);
-    //     var simplicesTargetCount = from.Sum(x => x) / simplicesDimension;
-    //     var addedSimplicesSequence = new Stack<(int, HyperEdge)>();
-    //     var addedSimplicesIndices = new HashSet<int>();
-    //     var currentSimplexToAddIndex = -1;
-    //
-    //     while (addedSimplicesSequence.Count != simplicesTargetCount)
-    //     {
-    //         cancellationToken.ThrowIfCancellationRequested();
-    //
-    //         while (++currentSimplexToAddIndex == simplicesMaxCount)
-    //         {
-    //             if (addedSimplicesSequence.Count == 0)
-    //             {
-    //                 yield return null;
-    //             }
-    //
-    //             var poppedSimplex = addedSimplicesSequence.Pop();
-    //             addedSimplicesIndices.Remove(currentSimplexToAddIndex = poppedSimplex.Item1);
-    //             from.AddSimplex(poppedSimplex.Item2);
-    //         }
-    //
-    //         if (addedSimplicesIndices.Contains(currentSimplexToAddIndex))
-    //         {
-    //             continue;
-    //         }
-    //
-    //         var simplexToPush = HomogenousHypergraph.BitIndexToSimplex(currentSimplexToAddIndex, simplicesDimension,
-    //             from.VerticesCount, simplicesMaxCount);
-    //         if (!from.TryRemoveSimplex(simplexToPush))
-    //         {
-    //             continue;
-    //         }
-    //
-    //         addedSimplicesSequence.Push((currentSimplexToAddIndex, simplexToPush));
-    //         addedSimplicesIndices.Add(currentSimplexToAddIndex);
-    //     }
-    // }
-    //
-    // #endregion
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="simplicesDimension"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [Obsolete]
+    private async IAsyncEnumerable<HomogenousHypergraph?> RestoreAllInnerIterativeAsync(
+        Domain.VerticesDegreesVector from,
+        int simplicesDimension,
+        CancellationToken cancellationToken = default)
+    {
+        var simplicesMaxCount = BigIntegerExtensions.CombinationsCount(from.VerticesCount, simplicesDimension);
+        var simplicesTargetCount = from.Sum(x => x) / simplicesDimension;
+        var addedSimplicesSequence = new Stack<(int, HyperEdge)>();
+        var addedSimplicesIndices = new HashSet<int>();
+        var currentSimplexToAddIndex = -1;
+    
+        while (addedSimplicesSequence.Count != simplicesTargetCount)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+    
+            while (++currentSimplexToAddIndex == simplicesMaxCount)
+            {
+                if (addedSimplicesSequence.Count == 0)
+                {
+                    yield return null;
+                }
+    
+                var poppedSimplex = addedSimplicesSequence.Pop();
+                addedSimplicesIndices.Remove(currentSimplexToAddIndex = poppedSimplex.Item1);
+                from.AddSimplex(poppedSimplex.Item2);
+            }
+    
+            if (addedSimplicesIndices.Contains(currentSimplexToAddIndex))
+            {
+                continue;
+            }
+    
+            var simplexToPush = HomogenousHypergraph.BitIndexToSimplex(currentSimplexToAddIndex, simplicesDimension,
+                from.VerticesCount, simplicesMaxCount);
+            if (!from.TryRemoveSimplex(simplexToPush))
+            {
+                continue;
+            }
+    
+            addedSimplicesSequence.Push((currentSimplexToAddIndex, simplexToPush));
+            addedSimplicesIndices.Add(currentSimplexToAddIndex);
+        }
+    }
+    
 
  
     protected  VerticesDegreesVectorGreedyRestorer ThrowIfInvalidInputPrototype(
@@ -227,6 +224,8 @@ public sealed class VerticesDegreesVectorGreedyRestorer
                     new HashSet<HyperEdge>()
                 );
     }
+    
+
     
     public IAsyncEnumerable<HomogenousHypergraph?> RestoreAllInnerAsync(
         Domain.VerticesDegreesVector from,
