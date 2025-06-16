@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -11,8 +10,6 @@
       <ProjectReference Include="..\Diplom.Domain.Extensions\Diplom.Domain.Extensions.csproj" />
       <ProjectReference Include="..\Diplom.Domain.Helpers\Diplom.Domain.Helpers.csproj" />
       <ProjectReference Include="..\Diplom.Math.Domain\Diplom.Math.Domain.csproj" />
-      <ProjectReference Include="..\Diplom.Math.Encryptor\Diplom.Math.Encryptor.csproj" />
-      <ProjectReference Include="..\Diplom.Math.VerticesDegreesVector\Diplom.Math.VerticesDegreesVector.csproj" />
     </ItemGroup>
 
 </Project>

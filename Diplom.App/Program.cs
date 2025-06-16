@@ -33,5 +33,39 @@ public class Program
                 Console.WriteLine("Null element encountered.");
             }
         }
+
+        
+        var key = new GeneratedHomogenousHypergraph(5, 3).generateKey(23, 5);
+        
+        var algorithm = new HomogenousHypergraphEncryptor(key, 2);
+        
+        
+        var block = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+        Console.Write("Initial state: ");
+        for (var i = 0; i < block.Length; ++i)
+        {
+            Console.Write($"{block[i]} ");
+        }
+        Console.WriteLine();
+
+        CryptoTransformationContext.PerformCipher(algorithm, 1, CipherMode.ElectronicCodebook, CipherTransformationMode.Encryption, null, block);
+        
+        Console.Write("Encryption result: ");
+        for (var i = 0; i < block.Length; ++i)
+        {
+            Console.Write($"{block[i]} ");
+        }
+        Console.WriteLine();
+
+        CryptoTransformationContext.PerformCipher(algorithm, 1, CipherMode.ElectronicCodebook, CipherTransformationMode.Decryption, null, block);
+        
+        Console.Write("Decryption result: ");
+        for (var i = 0; i < block.Length; ++i)
+        {
+            Console.Write($"{block[i]} ");
+        }
+        Console.WriteLine();
+
+
     }
 }
